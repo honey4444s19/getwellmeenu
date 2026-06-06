@@ -1,35 +1,298 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Get Well Soon ❤️</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Naughty Dog!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffe6f2 0%, #ffedf2 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Game Screen Layout */
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        header {
+            margin-top: 20px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        #story-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        #score-board {
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.15);
+            margin-top: 15px;
+            font-weight: bold;
+            color: #d63384;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+
+        /* Play Area */
+        #play-area {
+            flex-grow: 1;
+            width: 100%;
+            position: relative;
+        }
+
+        /* The Dog Target */
+        #dog {
+            position: absolute;
+            font-size: 5rem;
+            cursor: pointer;
+            transition: left 0.3s ease, top 0.3s ease;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        /* Popup Floating Messages */
+        .popup-message {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #ffb3d9;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: #c2185b;
+            font-size: 0.9rem;
+            pointer-events: none;
+            z-index: 100;
+            animation: floatUp 0.8s ease-out forwards;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            white-space: nowrap;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 1; }
+            100% { transform: translateY(-60px) scale(1.1); opacity: 0; }
+        }
+
+        /* End Screen Layout */
+        #end-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            background: linear-gradient(135deg, #fff0f6 0%, #ffdeeb 100%);
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .heading-blossom {
+            font-size: 2.2rem;
+            color: #d63384;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        .letter-content {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.12);
+            max-width: 500px;
+            line-height: 1.6;
+            color: #495057;
+            font-size: 1.1rem;
+            border: 1px solid rgba(214, 51, 132, 0.1);
+        }
+
+        .letter-content p {
+            margin-bottom: 15px;
+        }
+
+        .love-footer {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #d63384;
+            margin-top: 25px;
+        }
+    </style>
 </head>
 <body>
 
-<div class="game">
+    <div id="game-container">
+        <header>
+            <h1>Catch the Naughty Dog! 🐕</h1>
+            <p id="story-text">"A naughty little dog stole all the bandages! Help collect them before he runs away."</p>
+            <div id="score-board">Bandages Collected: <span id="score">0</span> / 15</div>
+        </header>
 
-    <h1>🐶 Catch the Naughty Dog!</h1>
-    <p>Tap the dog to collect bandages 🩹</p>
-
-    <h2>Score: <span id="score">0</span>/15</h2>
-
-    <div id="dog">🐕</div>
-
-</div>
-
-<div id="messageBox">
-    <div id="messageCard">
-        <h1>🌸 Get Well Soon 🌸</h1>
-        <p>
-            You did it ❤️<br><br>
-            I hope you heal fast and feel better soon.<br>
-            I'm always with you 🫂
-        </p>
-        <button onclick="location.reload()">Play Again 🐶</button>
+        <div id="play-area">
+            <div id="dog">🐶</div>
+        </div>
     </div>
-</div>
 
-<script src="script.js"></script>
+    <div id="end-screen">
+        <h1 class="heading-blossom">🌸 Get Well Soon, Meenu 🌸</h1>
+        
+        <div class="letter-content">
+            <p><strong>"Even though I'm far away, I wish I could take your pain away.</strong></p>
+            <p><strong>I hope your wounds heal quickly and your smile comes back even faster. ❤️</strong></p>
+            <p><strong>You're stronger than one naughty little dog.</strong></p>
+            <p><strong>Take care of yourself, and remember I'm always with you. 🫂💕"</strong></p>
+        </div>
 
+        <div class="love-footer">❤️ Love you. ❤️</div>
+    </div>
+
+    <script>
+        const dog = document.getElementById('dog');
+        const playArea = document.getElementById('play-area');
+        const scoreDisplay = document.getElementById('score');
+        const gameContainer = document.getElementById('game-container');
+        const endScreen = document.getElementById('end-screen');
+
+        let score = 0;
+        let moveInterval;
+
+        const messages = [
+            "🐶 Sorry!",
+            "🦴 I didn't mean to bite!",
+            "❤️ Here's a bandage!"
+        ];
+
+        // Function to move the dog randomly inside the play area boundaries
+        function moveDog() {
+            const areaWidth = playArea.clientWidth;
+            const areaHeight = playArea.clientHeight;
+            
+            // Stay safely within the screen borders
+            const maxX = areaWidth - 100; 
+            const maxY = areaHeight - 100;
+
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+            dog.style.left = `${randomX}px`;
+            dog.style.top = `${randomY}px`;
+        }
+
+        // Create a floating text effect where the user clicked
+        function triggerPopupMessage(x, y) {
+            const popup = document.createElement('div');
+            popup.className = 'popup-message';
+            
+            // Select a random phrase from the list
+            const randomPhrase = messages[Math.floor(Math.random() * messages.length)];
+            popup.innerText = randomPhrase;
+
+            // Position it near the cursor/tap
+            popup.style.left = `${x}px`;
+            popup.style.top = `${y}px`;
+
+            playArea.appendChild(popup);
+
+            // Clean up element after animation finishes
+            setTimeout(() => {
+                popup.remove();
+            }, 800);
+        }
+
+        // Handle the catch mechanics
+        function catchDog(e) {
+            score++;
+            scoreDisplay.innerText = score;
+
+            // Get click/tap coordinates relative to the play area
+            const rect = playArea.getBoundingClientRect();
+            const clickX = (e.clientX || e.touches[0].clientX) - rect.left;
+            const clickY = (e.clientY || e.touches[0].clientY) - rect.top;
+
+            triggerPopupMessage(clickX, clickY);
+
+            if (score >= 15) {
+                endGame();
+            } else {
+                // Move immediately when caught, and reset the movement timer
+                moveDog();
+                clearInterval(moveInterval);
+                moveInterval = setInterval(moveDog, 1200); // changes position every 1.2 seconds if not clicked
+            }
+        }
+
+        function endGame() {
+            clearInterval(moveInterval);
+            gameContainer.style.display = 'none';
+            endScreen.style.display = 'flex';
+        }
+
+        // Event listeners for both Desktop mouse clicks and Mobile taps
+        dog.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            catchDog(e);
+        });
+
+        dog.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevents double firing on mobile
+            catchDog(e);
+        });
+
+        // Initialize game mechanics
+        moveDog();
+        moveInterval = setInterval(moveDog, 1200);
+    </script>
 </body>
 </html>
