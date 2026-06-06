@@ -6,20 +6,27 @@
 </head>
 <body>
 
-<h1>🐶 Catch the Naughty Dog!</h1>
-<p>Tap the dog to catch him 😄</p>
+<div class="game">
 
-<h2>Score: <span id="score">0</span>/15</h2>
+    <h1>🐶 Catch the Naughty Dog!</h1>
+    <p>Tap the dog to collect bandages 🩹</p>
 
-<div id="dog">🐕</div>
+    <h2>Score: <span id="score">0</span>/15</h2>
 
-<div id="message"></div>
+    <div id="dog">🐕</div>
 
-<div id="ending">
-    <h1>🌸 Get Well Soon, Meenu 🌸</h1>
-    <p>I hope you feel better soon ❤️</p>
-    <h2>🫂 Love you</h2>
-    <button onclick="location.reload()">Play Again</button>
+</div>
+
+<div id="messageBox">
+    <div id="messageCard">
+        <h1>🌸 Get Well Soon 🌸</h1>
+        <p>
+            You did it ❤️<br><br>
+            I hope you heal fast and feel better soon.<br>
+            I'm always with you 🫂
+        </p>
+        <button onclick="location.reload()">Play Again 🐶</button>
+    </div>
 </div>
 
 <script src="script.js"></script>
