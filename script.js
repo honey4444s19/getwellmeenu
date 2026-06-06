@@ -1,1 +1,43 @@
-body{ margin:0; padding:0; font-family:Arial, sans-serif; text-align:center; background:linear-gradient(to bottom,#bdefff,#ffffff); overflow:hidden; } h1{ margin-top:20px; } #dog{ position:absolute; font-size:70px; cursor:pointer; user-select:none; } #message{ margin-top:20px; font-size:28px; color:#ff4081; font-weight:bold; } #ending{ display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:white; padding-top:80px; } button{ margin-top:20px; padding:12px 25px; font-size:20px; border:none; border-radius:12px; cursor:pointer; }
+```javascript
+const dog = document.getElementById("dog");
+const score = document.getElementById("score");
+const message = document.getElementById("message");
+const ending = document.getElementById("ending");
+
+let points = 0;
+
+const texts = [
+    "🐶 Sorry!",
+    "🩹 Here's a bandage!",
+    "❤️ Get well soon!",
+    "💕 Love you!",
+    "😊 You're doing great!"
+];
+
+function moveDog() {
+    let x = Math.random() * (window.innerWidth - 120);
+    let y = Math.random() * (window.innerHeight - 180);
+
+    dog.style.left = x + "px";
+    dog.style.top = y + "px";
+}
+
+moveDog();
+
+dog.onclick = function () {
+
+    points++;
+    score.innerHTML = points;
+
+    message.innerHTML =
+        texts[Math.floor(Math.random() * texts.length)];
+
+    if (points >= 15) {
+        ending.style.display = "block";
+        dog.style.display = "none";
+        return;
+    }
+
+    moveDog();
+};
+```
