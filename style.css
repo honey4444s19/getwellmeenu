@@ -1,1 +1,13 @@
-const dog = document.getElementById("dog"); const scoreDisplay = document.getElementById("score"); const message = document.getElementById("message"); const ending = document.getElementById("ending"); let score = 0; const texts = [ "🐶 Sorry!", "🩹 Here's a bandage!", "❤️ Get well soon!", "💕 You're amazing!", "😊 Keep smiling!" ]; function moveDog(){ const x = Math.random() * (window.innerWidth - 100); const y = Math.random() * (window.innerHeight - 100); dog.style.left = x + "px"; dog.style.top = y + "px"; } moveDog(); dog.addEventListener("click", function(){ score++; scoreDisplay.textContent = score; message.textContent = texts[Math.floor(Math.random() * texts.length)]; if(score >= 15){ dog.style.display = "none"; ending.style.display = "block"; return; } moveDog(); });
+```css
+#dog{
+    position:absolute;
+    font-size:80px;
+    cursor:pointer;
+    user-select:none;
+    width:100px;
+    height:100px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+```
